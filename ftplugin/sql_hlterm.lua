@@ -1,12 +1,13 @@
-local config = require("hlterm").get_config()
+local hl = require("hlterm")
+local config = hl.get_config()
 
 local function source_lines(lines)
     local f = config.tmp_dir .. "/duckdb.sql"
     vim.fn.writefile(lines, f)
-    require("hlterm").send_cmd("duckdb", '. ' .. f ..  )
+    hl.send_cmd("duckdb", '.read ' .. f)
 end
 
-require("hlterm").set_ft_opts("sql", {
+hl.set_ft_opts("sql", {
     nl = "\n",
     app = "duckdb",
     quit_cmd = ".exit",
@@ -19,6 +20,6 @@ vim.api.nvim_buf_set_keymap(
     0,
     "n",
     config.mappings.start,
-    "<Cmd>lua require('hlterm').start_app('duckdb')<CR>",
+    "<Cmd>lua require('hlterm').start_app('sql')<CR>",
     {}
 )
